@@ -3,7 +3,7 @@ import datetime
 import pandas as pd
 import seaborn as sns
 import snscrape.modules.twitter as sntwitter
-import base64
+import b64
 
 sns.set_theme(style="whitegrid")
 
@@ -40,26 +40,12 @@ def get_tweets_as_file(text, username, since, until, retweet, replies):
 
     # Using TwitterSearchScraper to scrape data and append tweets to list
     for i, tweet in enumerate(sntwitter.TwitterSearchScraper(q).get_items()):
-        tweets_list1.append([tweet.date, tweet.id, base64_encode(tweet.rawContent),
+        tweets_list1.append([tweet.date, tweet.id, b64.encode(tweet.rawContent),
                              tweet.replyCount, tweet.retweetCount, tweet.likeCount])
 
     tweets_df1 = pd.DataFrame(tweets_list1, columns=['DateTime', 'TweetId', 'Text',
                                                      'ReplyCount', 'RetweetCount', 'LikeCount'])
     tweets_df1.to_csv(f"{twitterUser}.csv", index=False)
-
-
-def base64_encode(message):
-    message_bytes = message.encode('utf-8')
-    base64_bytes = base64.b64encode(message_bytes)
-    base64_message = base64_bytes.decode('utf-8')
-    return base64_message
-
-
-def base64_decode(message):
-    base64_bytes = message.encode('utf-8')
-    message_bytes = base64.b64decode(base64_bytes)
-    message = message_bytes.decode('utf-8')
-    return message
 
 
 # print(base64_encode('Python'))
