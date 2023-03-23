@@ -12,7 +12,7 @@ def main():
 
 def fb_posts_by_user_as_csv(user):
     fb_posts = []
-    for post in get_posts('nintendo', pages=1):
+    for post in get_posts('nintendo', pages=10):
         fb_posts.append([post['post_text'], post['time'], post['post_url']])
 
     fb_posts_df = pd.DataFrame(fb_posts, columns=['Text', 'DateTime', 'Url'])
