@@ -7,16 +7,19 @@ def main():
     fb_users = ['NikkyHaley', 'VivekGRamaswamy', 'coreysongs', 'DonaldTrump', 'williamsonmarianne']
 
     for user in fb_users:
+        print(f"Started getting posts for {user}")
         fb_posts_by_user_as_csv(user)
+        print(f"Finished getting posts for {user}")
 
 
 def fb_posts_by_user_as_csv(user):
     fb_posts = []
-    for post in get_posts('nintendo', pages=10):
-        fb_posts.append([post['post_text'], post['time'], post['post_url']])
+    for i, post in enumerate(get_posts('nintendo', pages=10, cookies='cookies.txt')):
+        encoded_text = b64.encode(post['post_text'])
+        fb_posts.append([encoded_text, post['time'], post['post_url']])
 
     fb_posts_df = pd.DataFrame(fb_posts, columns=['Text', 'DateTime', 'Url'])
-    fb_posts_df.to_csv(f"fb_{fb_username}.csv", index=False)
+    fb_posts_df.to_csv(f"fb_{user}.csv", index=False)
 
 
 # def fb_posts_by_user_as_csv(fb_username, count_max):
